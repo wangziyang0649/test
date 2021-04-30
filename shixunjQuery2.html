@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>四则运算练习题自动生成器</title>
+
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="../layui/css/layui.css" />
+    <script src="../layui-v2.5.7/layui/layui.all.js"></script>
+    <script src="../layui-v2.5.7/layui/layui.js"></script>
+    <style>
+        body{
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+<!-- 头部 -->
+<header>
+    <form class="layui-form" action="">
+        <div class="layui-form-item">
+            <label class="layui-form-label">题目数量</label>
+            <div class="layui-input-block">
+                <input type="text" name="many" required  lay-verify="required" placeholder="请输入题目数量" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">运算符</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="jia" title="+">
+                <input type="checkbox" name="jian" title="-" checked>
+                <input type="checkbox" name="cheng" title="*">
+                <input type="checkbox" name="chu" title="/">
+            </div>
+        </div>
+        <div class="layui-form-item">
+        <label class="layui-form-label">最大值</label>
+        <div class="layui-input-block">
+            <input type="text" name="max" required  lay-verify="required" placeholder="请输入最大值" autocomplete="off" class="layui-input">
+        </div>
+    </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">其他</label>
+            <div class="layui-input-block">
+                <input type="checkbox" name="xiao" title="小数">
+                <input type="checkbox" name="kuo" title="括号" checked>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">题目</label>
+        <div class="layui-input-block">
+            <textarea id="neirong" name="desc" placeholder="请输入内容" class="layui-textarea" style="height: 300px;"></textarea>
+        </div>
+    </div>
+    </form>
+</header>
+
+    <script>
+        //Demo
+        layui.use('form', function(){
+            var form = layui.form;
+            let Neirong = document.getElementById('neirong');
+
+            //监听提交
+            form.on('submit(formDemo)', function(data){
+                var fuhao = [4];
+                var fuhaoi = 0;
+                let max ;
+                let many;
+                if(data.field.jia == 'on'){
+                    fuhao[fuhaoi] = '+';
+                    fuhaoi++;
+                }if(data.field.jian == 'on'){
+                    fuhao[fuhaoi] = '-';
+                    fuhaoi++;
+                }
+                if(data.field.cheng == 'on'){
+                    fuhao[fuhaoi] = '*';
+                    fuhaoi++;
+                }if(data.field.chu == 'on'){
+                    fuhao[fuhaoi] = '/';
+                    fuhaoi++;
+                }
+                Neirong.innerHTML = '';
+                max =data.field.max;
+                many = data.field.many;
+                var kuo;
+                if(data.field.kuo !='on') {
+                    kuo = 0;
+                }else{kuo=1;}
+                if(data.field.xiao != 'on')
+                {
+                    for(var i=0 ;i<many;i++){
+                        var jieguo='';
+                        var kuozuo=0;
+                        var kuobiao=0;
+                        var ji=Math.round(Math.random()*10+2);
+                        for (var j=0;j<ji;j++){
+                            if(kuo==1&&kuozuo==0&&Math.round(Math.random()*2)==1){
+                                jieguo+='(';
+                                kuozuo=1;
+                                kuobiao = j;
+                            }
+                            var sui = Math.round(Math.random()*(parseInt(max)-1)+1);
+                            jieguo+=sui;
+                            if(kuo==1&&kuozuo==1&&(j-kuobiao)>2&&Math.round(Math.random()*2)==1){
+                                jieguo+=')';
+                                kuozuo=0;
+                                kuobiao = j;
+                            }
+                            var sui = Math.round(Math.random()*(fuhaoi-1));
+                            jieguo+=fuhao[sui];
+                        }
+                        var sui = Math.round(Math.random()*(parseInt(max)-1)+1);
+                        jieguo+=sui;
+                        if(kuozuo==1){
+                            jieguo+=')';
+                        }
+                        console.log(jieguo);
+                        jieguo+='=';
+                        Neirong.innerHTML += `${jieguo}\n`;
+                    }
+                }else{
+                    for(var i=0 ;i<many;i++){
+                        var jieguo='';
+                        var kuozuo=0;
+                        var kuobiao=0;
+                        var ji=Math.round(Math.random()*10+2);
+                        for (var j=0;j<ji;j++){
+                            if(kuo==1&&kuozuo==0&&Math.round(Math.random()*2)==1){
+                                jieguo+='(';
+                                kuozuo=1;
+                                kuobiao = j;
+                            }
+                            var sui = Math.round(Math.random()*(parseInt(max)-1)+1);
+                            jieguo+=sui;
+                            jieguo+='.';
+                            var sui = Math.round(Math.random()*9);
+                            jieguo+=sui;
+                            if(kuo==1&&kuozuo==1&&(j-kuobiao)>2&&Math.round(Math.random()*2)==1){
+                                jieguo+=')';
+                                kuozuo=0;
+                                kuobiao = j;
+                            }
+                            var sui = Math.round(Math.random()*(fuhaoi-1));
+                            jieguo+=fuhao[sui];
+                        }
+                        var sui = Math.round(Math.random()*(parseInt(max)-1)+1);
+                        jieguo+=sui;
+                        jieguo+='.';
+                        var sui = Math.round(Math.random()*9);
+                        jieguo+=sui;
+                        if(kuozuo==1){
+                            jieguo+=')';
+                        }
+                        console.log(jieguo);
+                        jieguo+='=';
+                        Neirong.innerHTML += `${jieguo}\n`;
+                    }
+                }
+                return false;
+            });
+        });
+    </script>
+
+</body>
+</html>
